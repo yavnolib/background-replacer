@@ -1,2 +1,2 @@
-# mlops_girafe
+# background-replacer
 Project for MLOps course by girafe-ai
