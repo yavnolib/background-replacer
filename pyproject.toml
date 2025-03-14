@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "background-replacer"
+version = "0.1.0"
+description = "Service that allows you to change the background in video conferences"
+authors = ["nikolaev jaroslav <nikolaev.iad@phystech.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^2.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

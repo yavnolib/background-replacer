@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    container_name: background-replacer
+    volumes:
+      - .:/app
+    working_dir: /app
+    user: root
+    command: ["tail", "-f", "/dev/null"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
