@@ -1,0 +1,6 @@
+data:
+  train_path: data/train
+  val_path: data/val
+  test_path: data/test
+  batch_size: 8
+  num_workers: 4

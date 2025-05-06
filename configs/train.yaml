@@ -1,0 +1,11 @@
+train:
+  epochs: 20
+  lr: 0.0003
+  weight_decay: 1e-4
+  accelerator: auto
+  devices: 1
+  logger:
+    type: tensorboard
+    save_dir: logs
+  output_model_path: outputs/model.pth
+  dvc_remote: s3://example-bucket/models

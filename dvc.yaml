@@ -1,0 +1,29 @@
+stages:
+  download:
+    cmd: python scripts/download_data.py
+    outs:
+      - data/train
+      - data/val
+      - data/test
+
+  preprocess:
+    cmd: python scripts/preprocess.py
+    deps:
+      - data/train
+    outs:
+      - data/processed
+
+  train:
+    cmd: python train.py
+    deps:
+      - data/processed
+    outs:
+      - outputs/model.pth
+
+  infer:
+    cmd: python infer.py
+    deps:
+      - outputs/model.pth
+      - data/test
+    outs:
+      - outputs/predictions.csv
