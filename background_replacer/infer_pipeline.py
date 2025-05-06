@@ -1,12 +1,15 @@
-import torch
-import cv2
 import os
-from background_replacer.models.unet import UNetModel
-from background_replacer.utils.transforms import get_val_transforms
+
+import cv2
 import hydra
+import pandas as pd
+import torch
 from omegaconf import DictConfig
 from tqdm import tqdm
-import pandas as pd
+
+from background_replacer.models.unet import UNetModel
+from background_replacer.utils.transforms import get_val_transforms
+
 
 @hydra.main(config_path="../configs", config_name="config")
 def infer_main(cfg: DictConfig):
@@ -16,7 +19,12 @@ def infer_main(cfg: DictConfig):
 
     transforms = get_val_transforms()
 
-    image_paths = sorted([os.path.join(cfg.infer.input_path, x) for x in os.listdir(cfg.infer.input_path)])
+    image_paths = sorted(
+        [
+            os.path.join(cfg.infer.input_path, x)
+            for x in os.listdir(cfg.infer.input_path)
+        ]
+    )
     results = []
 
     for img_path in tqdm(image_paths):
@@ -25,6 +33,8 @@ def infer_main(cfg: DictConfig):
         augmented = transforms(image=image_rgb)["image"].unsqueeze(0)
         with torch.no_grad():
             mask_pred = torch.sigmoid(model(augmented)).squeeze().cpu().numpy()
-        results.append({"image": os.path.basename(img_path), "mean_mask_val": mask_pred.mean()})
+        results.append(
+            {"image": os.path.basename(img_path), "mean_mask_val": mask_pred.mean()}
+        )
 
     pd.DataFrame(results).to_csv(cfg.infer.output_file, index=False)

@@ -9,6 +9,13 @@ readme = "README.md"
 python = "^3.11"
 numpy = "^2.2.3"
 
+[tool.black]
+line-length = 88  # Можно изменить на любое значение, если нужно
+target-version = ['py36']  # Задайте нужную версию Python
+
+[tool.isort]
+profile = "black"  # Используем профиль, совместимый с black
+line_length = 88  # Подгоняем длину строки, чтобы она совпала с black
 
 [build-system]
 requires = ["poetry-core"]

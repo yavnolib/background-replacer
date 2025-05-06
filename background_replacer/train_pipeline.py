@@ -1,10 +1,12 @@
-import pytorch_lightning as pl
-from background_replacer.models.unet import UNetModel
-from background_replacer.data.datamodule import SegmentationDataModule
-import torch.nn.functional as F
-import torch
 import hydra
+import pytorch_lightning as pl
+import torch
+import torch.nn.functional as F
 from omegaconf import DictConfig
+
+from background_replacer.data.datamodule import SegmentationDataModule
+from background_replacer.models.unet import UNetModel
+
 
 class LitSegmentation(pl.LightningModule):
     def __init__(self):
@@ -30,9 +32,12 @@ class LitSegmentation(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.Adam(self.model.parameters(), lr=1e-3)
 
+
 @hydra.main(config_path="../configs", config_name="config")
 def train_main(cfg: DictConfig):
-    dm = SegmentationDataModule(cfg.data.image_dir, cfg.data.mask_dir, cfg.data.batch_size)
+    dm = SegmentationDataModule(
+        cfg.data.image_dir, cfg.data.mask_dir, cfg.data.batch_size
+    )
     dm.setup()
     model = LitSegmentation()
     trainer = pl.Trainer(max_epochs=cfg.train.epochs)
